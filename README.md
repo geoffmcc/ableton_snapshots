@@ -6,6 +6,8 @@ Use it before risky edits, big arrangement changes, resampling, flattening track
 
 If the experiment works, keep going. If it does not, open the copied `.als` file inside the timestamped snapshot folder and you are back at the project state from the moment you pressed `F8`.
 
+Ableton Snapshots is not an instant in-session recall tool. Restoring a snapshot means opening the copied `.als` file from the timestamped snapshot folder.
+
 ## What It Does
 
 - Works only while Ableton Live is the active window.
@@ -163,6 +165,7 @@ This project requires AutoHotkey v2. AutoHotkey v1 is not compatible with this s
 
 - Large projects may take time and disk space to copy.
 - This is not a replacement for full backups.
+- This is a project rollback tool, not an instant in-session mixer or device snapshot system.
 - Snapshots copy the project folder as it exists on disk. Use **Collect All and Save** before `F8` when you need external samples copied into the project.
 - Project detection depends on the Ableton window title matching an `.als` file under your configured project search root.
 - If multiple matching sets are found, the script asks you to select the correct project folder.
