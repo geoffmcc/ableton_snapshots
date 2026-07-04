@@ -1,5 +1,7 @@
 # Ableton Snapshots
 
+Project-folder rollback snapshots for Ableton Live.
+
 Ableton Snapshots is a small Windows helper for making fast, timestamped rollback points while working in Ableton Live.
 
 Use it before risky edits, big arrangement changes, resampling, flattening tracks, sound-design experiments, or anything else you might want to undo cleanly. After saving or collecting the project, press `F8`, write a quick note, and the script copies the current Ableton project into a timestamped `snapshots` folder inside that same project.
@@ -7,6 +9,20 @@ Use it before risky edits, big arrangement changes, resampling, flattening track
 If the experiment works, keep going. If it does not, open the copied `.als` file inside the timestamped snapshot folder and you are back at the project state from the moment you pressed `F8`.
 
 Ableton Snapshots is not an instant in-session recall tool. Restoring a snapshot means opening the copied `.als` file from the timestamped snapshot folder.
+
+## Who This Is For
+
+Ableton Snapshots is for producers who want quick project-level rollback points before destructive or messy changes.
+
+It is useful when you are about to resample, flatten tracks, rearrange a project, try a risky sound-design idea, or make changes that may be annoying to undo later.
+
+Unlike an incremental `.als` save, this creates a timestamped copy of the project folder, plus a note, inside that project's own `snapshots` directory.
+
+## Who This Is Not For
+
+This is not an instant mixer, device, or performance snapshot system. It does not switch states inside the currently open Ableton set.
+
+Restoring a snapshot means opening the copied `.als` file from the timestamped snapshot folder.
 
 ## What It Does
 
@@ -59,7 +75,7 @@ Ableton Snapshots uses AutoHotkey v2 for the `F8` and `Shift+F8` hotkeys. AutoHo
 
 ## First-Time Setup
 
-Run the installer once from this project folder:
+Download or clone this repo, then run the installer once from the project folder:
 
 ```powershell
 .\Install-AbletonSnapshots.ps1
