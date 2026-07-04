@@ -1,7 +1,7 @@
 $ErrorActionPreference = 'Stop'
 
 $scriptDir = Split-Path -Parent $PSCommandPath
-$snapshotScript = Join-Path $scriptDir 'AbletonSnapshot.ahk'
+$checkpointScript = Join-Path $scriptDir 'AbletonCheckpoint.ahk'
 
 function Get-AbletonPath {
     $shortcutPath = 'C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Ableton Live 12 Suite.lnk'
@@ -53,8 +53,8 @@ function Get-AutoHotkeyPath {
     throw 'Could not find AutoHotkey. Install AutoHotkey v2 or add it to PATH.'
 }
 
-if (!(Test-Path -LiteralPath $snapshotScript)) {
-    throw "Could not find snapshot script: $snapshotScript"
+if (!(Test-Path -LiteralPath $checkpointScript)) {
+    throw "Could not find checkpoint script: $checkpointScript"
 }
 
 $abletonPath = Get-AbletonPath
@@ -63,7 +63,7 @@ $ahkProcess = $null
 
 try {
     $abletonProcess = Start-Process -FilePath $abletonPath -PassThru
-    $ahkProcess = Start-Process -FilePath $autoHotkeyPath -ArgumentList @($snapshotScript) -PassThru
+    $ahkProcess = Start-Process -FilePath $autoHotkeyPath -ArgumentList @($checkpointScript) -PassThru
 
     Wait-Process -Id $abletonProcess.Id
 

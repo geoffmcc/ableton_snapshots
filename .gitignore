@@ -1,6 +1,6 @@
 .env
 .env.*
 *.log
-snapshots/
+checkpoints/
 *.bak
 *.tmp

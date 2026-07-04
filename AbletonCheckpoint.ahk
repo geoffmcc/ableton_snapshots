@@ -10,7 +10,7 @@ global PROJECT_SEARCH_ROOT := GetProjectSearchRoot()
 +F8:: {
     global lastProjectPath
     lastProjectPath := ""
-    TrayTip "Ableton Snapshot", "Cached project cleared", 2
+    TrayTip "Ableton Checkpoint", "Cached project cleared", 2
 }
 
 F8:: {
@@ -25,30 +25,30 @@ F8:: {
 
     timestamp := FormatTime(, "yyyy-MM-dd_HH-mm-ss")
     noteResult := InputBox(
-        "Describe this snapshot:`n`nFor the most complete rollback point, run Ableton's File > Collect All and Save before pressing F8, especially after adding new samples, recordings, resampled audio, or external media.`n`nIf you have not done that and this snapshot needs those files included, press Cancel now, run Collect All and Save in Ableton, then press F8 again.`n`nIf nothing new has been added since the last collect/save, you usually do not need to collect all again.",
-        "Ableton Snapshot Note",
+        "Describe this checkpoint:`n`nFor the most complete rollback point, run Ableton's File > Collect All and Save before pressing F8, especially after adding new samples, recordings, resampled audio, or external media.`n`nIf you have not done that and this checkpoint needs those files included, press Cancel now, run Collect All and Save in Ableton, then press F8 again.`n`nIf nothing new has been added since the last collect/save, you usually do not need to collect all again.",
+        "Ableton Checkpoint Note",
         "w560 h300"
     )
 
     if (noteResult.Result = "Cancel")
         return
 
-    snapshotRoot := path "\snapshots"
-    snapshotPath := snapshotRoot "\" timestamp
+    checkpointRoot := path "\checkpoints"
+    checkpointPath := checkpointRoot "\" timestamp
 
-    DirCreate(snapshotRoot)
-    DirCreate(snapshotPath)
+    DirCreate(checkpointRoot)
+    DirCreate(checkpointPath)
 
-    SaveSnapshotNote(snapshotPath, timestamp, projectName, path, noteResult.Value)
+    SaveCheckpointNote(checkpointPath, timestamp, projectName, path, noteResult.Value)
 
     Loop Files path "\*", "FD" {
-        if InStr(A_LoopFileFullPath, "\snapshots")
+        if InStr(A_LoopFileFullPath, "\checkpoints")
             continue
 
-        CopyItem(A_LoopFileFullPath, snapshotPath "\" A_LoopFileName)
+        CopyItem(A_LoopFileFullPath, checkpointPath "\" A_LoopFileName)
     }
 
-    TrayTip "Snapshot Saved", timestamp, 2
+    TrayTip "Checkpoint Saved", timestamp, 2
 }
 
 #HotIf
@@ -64,7 +64,7 @@ IsAbletonActive() {
 }
 
 GetProjectSearchRoot() {
-    configuredRoot := EnvGet("ABLETON_SNAPSHOT_PROJECT_ROOT")
+    configuredRoot := EnvGet("ABLETON_CHECKPOINT_PROJECT_ROOT")
 
     if (configuredRoot != "")
         return configuredRoot
@@ -107,7 +107,7 @@ DetectAbletonProjectPath() {
 
     matches := []
     Loop Files PROJECT_SEARCH_ROOT "\*.als", "FR" {
-        if InStr(StrLower(A_LoopFileFullPath), "\snapshots\")
+        if InStr(StrLower(A_LoopFileFullPath), "\checkpoints\")
             continue
 
         SplitPath(A_LoopFileName,,,, &nameNoExt)
@@ -146,14 +146,14 @@ GetAbletonSetNameFromTitle(title) {
     return title
 }
 
-SaveSnapshotNote(snapshotPath, timestamp, projectName, projectPath, note) {
-    noteText := "Snapshot: " timestamp "`n"
+SaveCheckpointNote(checkpointPath, timestamp, projectName, projectPath, note) {
+    noteText := "Checkpoint: " timestamp "`n"
         . "Project: " projectName "`n"
         . "Path: " projectPath "`n`n"
         . "Note:`n"
         . note "`n"
 
-    FileAppend(noteText, snapshotPath "\note.txt", "UTF-8")
+    FileAppend(noteText, checkpointPath "\note.txt", "UTF-8")
 }
 
 CopyItem(src, dest) {

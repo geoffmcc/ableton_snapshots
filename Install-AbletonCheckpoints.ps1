@@ -1,11 +1,11 @@
 $ErrorActionPreference = 'Stop'
 
 $scriptDir = Split-Path -Parent $PSCommandPath
-$launcherPath = Join-Path $scriptDir 'Start-AbletonSnapshots.ps1'
-$shortcutName = 'Ableton Live with Snapshots.lnk'
+$launcherPath = Join-Path $scriptDir 'Start-AbletonCheckpoints.ps1'
+$shortcutName = 'Ableton Live with Project Checkpoints.lnk'
 $shortcutPath = Join-Path ([Environment]::GetFolderPath('Desktop')) $shortcutName
 $defaultProjectRoot = Join-Path $env:USERPROFILE 'Documents\Ableton Projects'
-$envVarName = 'ABLETON_SNAPSHOT_PROJECT_ROOT'
+$envVarName = 'ABLETON_CHECKPOINT_PROJECT_ROOT'
 
 function Get-ConfiguredProjectRoot {
     return [Environment]::GetEnvironmentVariable($envVarName, 'User')
@@ -85,7 +85,7 @@ function Set-ProjectRootOption {
     }
 }
 
-function New-AbletonSnapshotsShortcut {
+function New-AbletonCheckpointsShortcut {
     if (!(Test-Path -LiteralPath $launcherPath)) {
         throw "Could not find launcher: $launcherPath"
     }
@@ -95,7 +95,7 @@ function New-AbletonSnapshotsShortcut {
     $shortcut.TargetPath = 'powershell.exe'
     $shortcut.Arguments = "-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File `"$launcherPath`""
     $shortcut.WorkingDirectory = $scriptDir
-    $shortcut.Description = 'Launch Ableton Live with Ableton Snapshots hotkeys'
+    $shortcut.Description = 'Launch Ableton Live with Ableton Project Checkpoints hotkeys'
     $shortcut.Save()
 
     Write-Host "Created or updated shortcut: $shortcutPath"
@@ -106,15 +106,15 @@ function Confirm-ShortcutUpdate {
     return ($answer -eq '' -or $answer -match '^(y|yes)$')
 }
 
-Write-Host 'Ableton Snapshots Setup'
-Write-Host '======================='
+Write-Host 'Ableton Project Checkpoints Setup'
+Write-Host '=================================='
 Write-Host ''
 Show-CurrentProjectRoot
 Set-ProjectRootOption
 
 Write-Host ''
 if (Confirm-ShortcutUpdate) {
-    New-AbletonSnapshotsShortcut
+    New-AbletonCheckpointsShortcut
 } else {
     Write-Host 'Skipped shortcut creation.'
 }
@@ -122,4 +122,4 @@ if (Confirm-ShortcutUpdate) {
 Write-Host ''
 Show-CurrentProjectRoot
 Write-Host ''
-Write-Host 'Setup complete. Launch Ableton using the "Ableton Live with Snapshots" Desktop shortcut.'
+Write-Host 'Setup complete. Launch Ableton using the "Ableton Live with Project Checkpoints" Desktop shortcut.'
